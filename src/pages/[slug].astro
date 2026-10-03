@@ -1,0 +1,7 @@
+---
+import Page from '../layouts/Page.astro';
+import fs from 'node:fs';
+export function getStaticPaths(){return fs.readdirSync('src/data/pages').filter(p=>p.endsWith('.json')&&p!=='index.json').map(p=>({params:{slug:p.slice(0,-5)}}));}
+const {slug}=Astro.params;const page=JSON.parse(fs.readFileSync('src/data/pages/'+slug+'.json','utf8'));
+---
+<Page page={page} slug={slug} />
