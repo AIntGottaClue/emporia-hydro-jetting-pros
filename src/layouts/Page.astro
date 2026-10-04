@@ -51,3 +51,13 @@ if(!['privacy','terms','contact','service-areas'].includes(slug)) schema['@graph
 <style is:global>.sat-sticky-call{background:#00d6ec!important;color:#050c12!important}.inline-content-link{color:#00d6ec!important}</style>
 
 <style is:global>.satellite-call{background:#00d6ec!important;color:#071015!important}</style>
+
+<style is:global>
+/* Success replaces the form only after a confirmed tracker response. */
+[data-lead-form][hidden],.lead-success[hidden]{display:none!important}
+.lead-success{outline:none;text-align:center}
+.lead-success svg{display:block;margin:0 auto 20px;color:#16a34a}
+.lead-success h2{font-size:clamp(24px,4vw,32px);font-weight:700;line-height:1.2;margin:0 0 20px}
+.lead-success p{line-height:1.65;margin:0 auto 24px;max-width:34em}
+.lead-success .lead-success__again{background:none;border:0;border-radius:0;padding:0;margin-top:8px;font:inherit;font-weight:700;color:inherit;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+</style>
