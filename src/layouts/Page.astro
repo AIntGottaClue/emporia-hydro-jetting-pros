@@ -71,3 +71,9 @@ if(slug!=='index')schema['@graph'].push({'@type':'BreadcrumbList','@id':pageUrl+
 .lead-success p{line-height:1.65;margin:0 auto 24px;max-width:34em}
 .lead-success .lead-success__again{background:none;border:0;border-radius:0;padding:0;margin-top:8px;font:inherit;font-weight:700;color:inherit;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 </style>
+
+<style is:global>
+header .sat-desktop-nav summary,.sat-mobile-panel summary { list-style:none; cursor:pointer; }
+header .sat-desktop-nav summary::-webkit-details-marker,.sat-mobile-panel summary::-webkit-details-marker { display:none; }
+header .sat-desktop-nav summary::after,.sat-mobile-panel summary::after { content:""; display:inline-block; margin-left:6px; width:6px; height:6px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg) translateY(-2px); }
+</style>
