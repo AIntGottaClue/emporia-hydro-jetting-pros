@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://emporiahydrojetting.prosapp.site/sitemap.xml
