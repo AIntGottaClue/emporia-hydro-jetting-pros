@@ -1,7 +1,7 @@
 // Version the stylesheet so new navigation styles replace cached previews.
 const menu = document.querySelector('[data-menu-button]');
 // Keep the existing links and branding; reuse the Fix & Flip three-line toggle and submenu.
-if (menu) { menu.setAttribute('aria-label', 'Toggle menu'); menu.innerHTML = '<span></span><span></span><span></span>'; }
+if (menu) { menu.setAttribute('aria-label', 'Toggle menu'); menu.innerHTML = '<svg class="mobile-menu-hamburger" aria-hidden="true" focusable="false" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg><svg class="mobile-menu-x" aria-hidden="true" focusable="false" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"/></svg>'; }
 const serviceLinks = [['Severe Grease and Sludge','severe-grease-and-sludge'],['Tree Root Intrusions','tree-root-intrusions'],['Recurring Clogs and Slow Drains','recurring-clogs-and-slow-drains'],['Mineral and Scale Deposits','mineral-and-scale-deposits'],['Preventative Maintenance','preventative-maintenance']];
 const menuNav = document.querySelector('[data-nav]');
 if (menuNav) {
@@ -127,3 +127,42 @@ window.fetch = function(url,options) {
   return pending;
 };
 
+
+/* Desktop dropdowns open on hover; touch/mobile keeps the existing tap controls. */
+(function () {
+  var groups = [].slice.call(document.querySelectorAll('header .navlinks__dropdown, header .site-nav__dropdown, header .dd, header .sat-desktop-nav details, header nav#nav > details'));
+  function desktop(group) {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return false;
+    var header = group.closest('header');
+    var toggle = header && header.querySelector('[data-menu-button], [data-menu], [data-mobile-menu], .site-header__toggle, button.menu');
+    return !toggle || getComputedStyle(toggle).display === 'none';
+  }
+  function set(group, open) {
+    if (group.tagName === 'DETAILS') group.open = open;
+    else group.classList.toggle(group.classList.contains('site-nav__dropdown') ? 'is-open' : 'open', open);
+    var trigger = group.querySelector('button, summary');
+    if (trigger) trigger.setAttribute('aria-expanded', String(open));
+  }
+  groups.forEach(function (group) {
+    var trigger = group.querySelector('button, summary');
+    if (!trigger) return;
+    group.addEventListener('mouseenter', function () {
+      if (!desktop(group)) return;
+      groups.forEach(function (other) { if (other !== group) set(other, false); });
+      set(group, true);
+    });
+    group.addEventListener('mouseleave', function () { if (desktop(group)) set(group, false); });
+    group.addEventListener('focusin', function () { if (desktop(group)) set(group, true); });
+    group.addEventListener('focusout', function (event) { if (desktop(group) && !group.contains(event.relatedTarget)) set(group, false); });
+    trigger.addEventListener('click', function (event) {
+      if (!desktop(group) || event.detail === 0) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      set(group, true);
+    }, true);
+    group.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') { trigger.focus(); set(group, false); }
+    });
+  });
+  window.addEventListener('resize', function () { groups.forEach(function (group) { set(group, false); }); });
+})();
